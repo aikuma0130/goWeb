@@ -40,6 +40,15 @@ func (r *room) run() {
 	}
 }
 
+func (r *room) newRoom() *room {
+	return &room{
+		forward: make(chan []byte),
+		join: make(chan *client),
+		leave: make(chan *client),
+		clients: make(map[*client] bool),
+	}
+}
+
 const (
 	socketBufferSize  = 1024
 	messageBufferSize = 256
