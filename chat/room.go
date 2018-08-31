@@ -40,12 +40,12 @@ func (r *room) run() {
 	}
 }
 
-func (r *room) newRoom() *room {
+func newRoom() *room {
 	return &room{
 		forward: make(chan []byte),
-		join: make(chan *client),
-		leave: make(chan *client),
-		clients: make(map[*client] bool),
+		join:    make(chan *client),
+		leave:   make(chan *client),
+		clients: make(map[*client]bool),
 	}
 }
 
