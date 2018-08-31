@@ -1,8 +1,17 @@
 <html>
   <head>
     <title> チャット </title>
+    <style>
+      input { display: block; }
+      ul { list-style: none; }
+    </style>
   </head>
   <body>
-    チャットしましょう !（テンプレートより）
+    <ul id="messages"></ul>
+    WebSocketを使ったアプリケーション
+    <form id="chatbox">
+      <textarea></textarea>
+      <input type="submit" value="送信" />
+    </form>
   </body>
 </html>
