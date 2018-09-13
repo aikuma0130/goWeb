@@ -29,6 +29,8 @@ func MustAuth(handler http.Handler) http.Handler {
 	return &authHandler{next: handler}
 }
 
+// サードパーティーへのログインの処理
+// パスの形式: /auth/{action}/{provider}
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	segs := strings.Split(r.URL.Path, "/")
 	action := segs[2]
