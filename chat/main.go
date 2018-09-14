@@ -9,7 +9,10 @@ import (
 	"path/filepath"
 	"sync"
 
+	"github.com/stretchr/gomniauth"
+
 	"github.com/aikuma0130/goWeb/trace"
+	"github.com/stretchr/gomniauth/providers/google"
 )
 
 type templateHandler struct {
@@ -27,7 +30,18 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	var addr = flag.String("addr", ":8888", "アプリケーションのアドレス")
+	var securityKey = os.Getenv("SECURITY_KEY")
+	var googleClientID = os.Getenv("GOOGLE_CLIENT_ID")
+	var googleSecrets = os.Getenv("GOOGLE_SECRETS")
 	flag.Parse()
+
+	gomniauth.SetSecurityKey(securityKey)
+	gomniauth.WithProviders(
+		//facebook.New("クライアントID", "秘密の値", "http://localhost:8080/auth/callback/facebook"),
+		//github.New("クライアントID", "秘密の値", "http://localhost:8080/auth/callback/github"),
+		google.New(googleClientID, googleSecrets, "http://localhost:8080/auth/callback/google"),
+	)
+
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
