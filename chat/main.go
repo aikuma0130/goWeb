@@ -12,6 +12,8 @@ import (
 	"github.com/stretchr/gomniauth"
 
 	"github.com/aikuma0130/goWeb/trace"
+	//"github.com/stretchr/gomniauth/providers/facebook"
+	"github.com/stretchr/gomniauth/providers/github"
 	"github.com/stretchr/gomniauth/providers/google"
 )
 
