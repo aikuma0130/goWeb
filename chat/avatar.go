@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"path/filepath"
 )
 
 // ErrNoAvatarはAvatarインスタンスがアバターのURLを返すことができない
@@ -50,7 +52,16 @@ var UseFileSystemAvatar FileSystemAvatar
 func (_ FileSystemAvatar) GetAvatarURL(c *client) (string, error) {
 	if userId, ok := c.userData["user_id"]; ok {
 		if userIdStr, ok := userId.(string); ok {
-			return fmt.Sprintf("/avatars/%s.jpg", userIdStr), nil
+			if files, err := ioutil.ReadDir("avatars"); err == nil {
+				for _, file := range files {
+					if file.IsDir() {
+						continue
+					}
+					if match, _ := filepath.Match(userIdStr+"*", file.Name()); match {
+						return "/avatars/" + file.Name(), nil
+					}
+				}
+			}
 		}
 	}
 	return "", ErrNoAvatarURL
