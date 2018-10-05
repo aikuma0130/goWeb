@@ -7,6 +7,8 @@ import (
 	"testing"
 )
 
+import gomniauthtest "github.com/stretchr/gomniauth/test"
+
 func TestAuthAvatar(t *testing.T) {
 	var authAvatar AuthAvatar
 	testUser := &gomniauthtest.TestUser{}
@@ -33,18 +35,13 @@ func TestAuthAvatar(t *testing.T) {
 
 func TestGravatarAvatar(t *testing.T) {
 	var gravatarAvatar GravatarAvatar
-	client := new(client)
-	client.userData = map[string]interface{}{
-		"user_id": "0bc83cb571cd1c50ba6f3e8a78ef1346",
-	}
-	testUrl := "//www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346"
-	url, err := gravatarAvatar.GetAvatarURL(client)
+	user := &chatUser{uniqueID: "abc"}
+	url, err := gravatarAvatar.GetAvatarURL(user)
 	if err != nil {
 		t.Error("GravatarAvatar.GetAvatarURLはエラーを返すべきではありません")
-	} else {
-		if url != testUrl {
-			t.Errorf("GravatarAvatar.GetAvatarURL が %s という誤った値を返しました", url)
-		}
+	}
+	if url != "//www.gravatar.com/avatar/abc" {
+		t.Errorf("GravatarAvatar.GetAvatarURL が %s という誤った値を返しました", url)
 	}
 }
 
@@ -55,9 +52,8 @@ func TestFileSystemAvatar(t *testing.T) {
 	defer func() { os.Remove(filename) }()
 
 	var fileSystemAvatar FileSystemAvatar
-	client := new(client)
-	client.userData = map[string]interface{}{"user_id": "abc"}
-	url, err := fileSystemAvatar.GetAvatarURL(client)
+	user := &chatUser{uniqueID: "abc"}
+	url, err := fileSystemAvatar.GetAvatarURL(user)
 	if err != nil {
 		t.Error("FileSystemAvatar.GetAvatarURL はエラーを返すべきではありません ")
 	}
