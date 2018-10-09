@@ -19,7 +19,11 @@ import (
 )
 
 // 現在アクティブなAvatarの実装
-var avatars Avatar = UseFileSystemAvatar
+var avatars = TryAvatars{
+	UseFileSystemAvatar,
+	UseAuthAvatar,
+	UseGravatarAvatar,
+}
 
 type templateHandler struct {
 	once     sync.Once
