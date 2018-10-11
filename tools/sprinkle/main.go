@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -15,7 +16,12 @@ var transforms = make([]string, 0)
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
-	f, err := os.Open("./transforms.txt")
+	exe, err := os.Executable()
+	if err != nil {
+		os.Exit(1)
+	}
+	dirPath := filepath.Dir(exe)
+	f, err := os.Open(dirPath + "/transforms.txt")
 	if err != nil {
 		os.Exit(1)
 	}
