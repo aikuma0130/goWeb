@@ -20,4 +20,4 @@ go build -o ../domainfinder/lib/coolify
 
 echo domainifyをビルドします...
 cd ../domainify
-go build -o ../domainfinde
+go build -o ../domainfinder/lib/domainify
