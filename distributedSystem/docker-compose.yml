@@ -1,0 +1,34 @@
+version: "3"
+
+volumes:
+  mongodb-data:
+    driver: local
+
+services:
+  nsqlookupd:
+    image: nsqio/nsq
+    ports:
+      - 4160:4160
+      - 4161:4161
+    command:
+      - "nsqlookupd"
+
+  nsqd:
+    image: nsqio/nsq
+    ports:
+      - 4150:4150
+      - 4151:4151
+    command:
+      - "nsqd"
+      - "--lookupd-tcp-address=nsqlookupd:4160"
+
+  mongod:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb-data:/data/db
