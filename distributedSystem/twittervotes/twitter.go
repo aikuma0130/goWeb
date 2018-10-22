@@ -6,6 +6,7 @@ import (
 	"net"
 	"time"
 
+	"github.com/garyburd/go-oauth/oauth"
 	"github.com/joeshaw/envdecode"
 )
 
@@ -38,7 +39,7 @@ func closeConn() {
 }
 
 var (
-	autuClient *oauth.Client
+	authClient *oauth.Client
 	creds      *oauth.Credentials
 )
 
