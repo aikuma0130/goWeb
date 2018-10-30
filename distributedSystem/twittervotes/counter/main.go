@@ -7,6 +7,7 @@ import (
 	"os"
 	"sync"
 
+	nsq "github.com/bitly/go-nsq"
 	mgo "gopkg.in/mgo.v2"
 )
 
@@ -40,4 +41,10 @@ func main() {
 
 	var countsLock sync.Mutex
 	var counts map[string]int
+	log.Println("NSQ に接続します ...")
+	q, err := nsq.NewConsumer("votes", "counter", nsq.NewConfig())
+	if err != nil {
+		fatal(err)
+		return
+	}
 }
