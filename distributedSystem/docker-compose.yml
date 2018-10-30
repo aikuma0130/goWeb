@@ -20,7 +20,10 @@ services:
       - 4151:4151
     command:
       - "nsqd"
+      - "--broadcast-address=0.0.0.0"
       - "--lookupd-tcp-address=nsqlookupd:4160"
+    depends_on:
+      - "nsqlookupd"
 
   mongod:
     image: mongo
