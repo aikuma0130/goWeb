@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 
 	mgo "gopkg.in/mgo.v2"
 )
@@ -36,4 +37,7 @@ func main() {
 		db.Close()
 	}()
 	pollData := db.DB("ballots").C("polls")
+
+	var countsLock sync.Mutex
+	var counts map[string]int
 }
