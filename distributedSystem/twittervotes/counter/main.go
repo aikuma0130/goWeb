@@ -47,4 +47,15 @@ func main() {
 		fatal(err)
 		return
 	}
+	q.AddHandler(nsq.HandlerFunc(func(m *nsq.Message) error {
+		countsLock.Lock()
+		defer countsLock.Unlock()
+		if counts == nil {
+			counts = make(map[string]int)
+		}
+		vote := string(m.Body)
+		counts[vote]++
+		return nil
+	}))
+
 }
