@@ -12,7 +12,7 @@ import (
 
 func main() {
 	var (
-		addr  = flag.String("addr", ":8080", "エンドポイントのアドレス")
+		addr  = flag.String("addr", ":8888", "エンドポイントのアドレス")
 		mongo = flag.String("mongo", "localhost", "MongoDBのアドレス")
 	)
 	flag.Parse()
