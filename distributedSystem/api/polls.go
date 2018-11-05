@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 
 	"gopkg.in/mgo.v2/bson"
@@ -27,4 +28,16 @@ func handlePolls(w http.ResponseWriter, r *http.Request) {
 	}
 	// 未対応のHTTPメソッド
 	respondHTTPErr(w, r, http.StatusNotFound)
+}
+
+func handlePollsGet(w http.ResponseWriter, r *http.Request) {
+	respondErr(w, r, http.StatusInternalServerError, errors.New("未実装です"))
+}
+
+func handlePollsPost(w http.ResponseWriter, r *http.Request) {
+	respondErr(w, r, http.StatusInternalServerError, errors.New("未実装です"))
+}
+
+func handlePollsDelete(w http.ResponseWriter, r *http.Request) {
+	respondErr(w, r, http.StatusInternalServerError, errors.New("未実装です"))
 }
