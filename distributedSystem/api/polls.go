@@ -1,6 +1,10 @@
 package main
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"net/http"
+
+	"gopkg.in/mgo.v2/bson"
+)
 
 type poll struct {
 	ID      bson.ObjectId  `bson:"_id" json:"id"`
@@ -22,5 +26,5 @@ func handlePolls(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// 未対応のHTTPメソッド
-	respondHTTPErr(w, r, http.StatusNotFound) }
+	respondHTTPErr(w, r, http.StatusNotFound)
 }
