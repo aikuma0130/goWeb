@@ -76,7 +76,7 @@ func handlePollsDelete(w http.ResponseWriter, r *http.Request) {
 	c := db.C("polls")
 	p := NewPath(r.URL.Path)
 	if !p.HasID() {
-		respondErr(w, r, http.StatusMethodNotAllowed, "すべての調査項目を削除することはできません", err)
+		respondErr(w, r, http.StatusMethodNotAllowed, "すべての調査項目を削除することはできません")
 		return
 	}
 	if err := c.RemoveId(bson.ObjectIdHex(p.ID)); err != nil {
