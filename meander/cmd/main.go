@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
+	"os"
 	"runtime"
 
 	"github.com/aikuma0130/goWeb/meander"
@@ -10,7 +12,11 @@ import (
 
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	//meander.APIKey = "TODO"
+	meander.APIKey = os.Getenv("GOOGLE_API_KEY")
+	if meander.APIKey == "" {
+		log.Println("Please Set GOOGLE_API_KEY")
+		return
+	}
 	http.HandleFunc("/journeys", func(w http.ResponseWriter, r *http.Request) {
 		respond(w, r, meander.Journeys)
 	})
