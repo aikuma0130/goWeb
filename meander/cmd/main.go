@@ -19,10 +19,10 @@ func main() {
 		log.Println("Please Set GOOGLE_API_KEY")
 		return
 	}
-	http.HandleFunc("/journeys", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/journeys", cors(func(w http.ResponseWriter, r *http.Request) {
 		respond(w, r, meander.Journeys)
-	})
-	http.HandleFunc("/recommendations", func(w http.ResponseWriter, r *http.Request) {
+	}))
+	http.HandleFunc("/recommendations", cors(func(w http.ResponseWriter, r *http.Request) {
 		q := &meander.Query{
 			Journey: strings.Split(r.URL.Query().Get("journey"), "|"),
 		}
@@ -32,7 +32,7 @@ func main() {
 		q.CostRangeStr = r.URL.Query().Get("cost")
 		places := q.Run()
 		respond(w, r, places)
-	})
+	}))
 	http.ListenAndServe(":18080", http.DefaultServeMux)
 }
 
