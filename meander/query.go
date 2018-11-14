@@ -14,27 +14,27 @@ import (
 var APIKey string
 
 type Place struct {
-	*googleGeometry `json:"geometry"`
+	*GoogleGeometry `json:"geometry"`
 	Name            string         `json:"name"`
 	Icon            string         `json:"icon"`
-	Photos          []*googlePhoto `json:"photos"`
+	Photos          []*GooglePhoto `json:"photos"`
 	Vicinity        string         `json:"vicinity"`
 }
 
-type googleResponse struct {
+type GoogleResponse struct {
 	Results []*Place `json:"results"`
 }
 
-type googleGeometry struct {
-	*googleLocation `json:"location"`
+type GoogleGeometry struct {
+	*GoogleLocation `json:"location"`
 }
 
-type googleLocation struct {
+type GoogleLocation struct {
 	Lat float64 `json:"lat"`
 	Lng float64 `json:"lng"`
 }
 
-type googlePhoto struct {
+type GooglePhoto struct {
 	PhotoRef string `json:"photo_reference"`
 	URL      string `json:"url"`
 }
@@ -58,7 +58,7 @@ type Query struct {
 	CostRangeStr string
 }
 
-func (q *Query) find(types string) (*googleResponse, error) {
+func (q *Query) find(types string) (*GoogleResponse, error) {
 	u := "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 	vals := make(url.Values)
 	vals.Set("location", fmt.Sprintf("%g,%g", q.Lat, q.Lng))
@@ -75,7 +75,7 @@ func (q *Query) find(types string) (*googleResponse, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	var response googleResponse
+	var response GoogleResponse
 	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}
