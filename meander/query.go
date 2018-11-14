@@ -63,7 +63,7 @@ func (q *Query) find(types string) (*GoogleResponse, error) {
 	vals := make(url.Values)
 	vals.Set("location", fmt.Sprintf("%g,%g", q.Lat, q.Lng))
 	vals.Set("radius", fmt.Sprintf("%d", q.Radius))
-	vals.Set("types", types)
+	vals.Set("type", types)
 	vals.Set("key", APIKey)
 	if len(q.CostRangeStr) > 0 {
 		r := ParseCostRange(q.CostRangeStr)
