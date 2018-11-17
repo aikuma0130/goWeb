@@ -5,3 +5,5 @@ type Archiver interface {
 }
 
 type zipper struct{}
+
+var ZIP Archiver = (*zipper)(nil)
