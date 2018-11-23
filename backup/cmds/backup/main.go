@@ -4,6 +4,8 @@ import (
 	"errors"
 	"flag"
 	"log"
+
+	"github.com/matryer/filedb"
 )
 
 func main() {
