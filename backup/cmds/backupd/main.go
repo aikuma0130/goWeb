@@ -1,9 +1,19 @@
 package main
 
 import (
+	"encoding/json"
+	"errors"
 	"flag"
 	"log"
+
+	"github.com/aikuma0130/goWeb/backup"
+	"github.com/matryer/filedb"
 )
+
+type path struct {
+	Path string
+	Hash string
+}
 
 func main() {
 	var fatalErr error
@@ -19,4 +29,39 @@ func main() {
 		dbpath   = flag.String("db", "./db", "filedbデータベースへのパス")
 	)
 	flag.Parse()
+
+	m := &backup.Monitor{
+		Destination: *archive,
+		Archiver:    backup.ZIP,
+		Paths:       make(map[string]string),
+	}
+
+	db, err := filedb.Dial(*dbpath)
+	if err != nil {
+		fatalErr = err
+		return
+	}
+	defer db.Close()
+	col, err := db.C("paths")
+	if err != nil {
+		fatalErr = err
+		return
+	}
+	var path path
+	col.ForEach(func(_ int, data []byte) bool {
+		if err := json.Unmarshal(data, &path); err != nil {
+			fatalErr = err
+			return true
+		}
+		m.Paths[path.Path] = path.Hash
+		return false // 処理を続行します
+	})
+	if fatalErr != nil {
+		return
+	}
+	if len(m.Paths) < 1 {
+		fatalErr = errors.New("パスがありません。backupツールを使って追加してください")
+		return
+	}
+
 }
