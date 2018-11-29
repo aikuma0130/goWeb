@@ -4,7 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
+	"fmt"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/aikuma0130/goWeb/backup"
 	"github.com/matryer/filedb"
@@ -24,7 +29,7 @@ func main() {
 	}()
 
 	var (
-		interval = flag.Int("interval", 10, "チェックの間隔(秒単位)")
+		interval = flag.Duration("interval", 10, "チェックの間隔(秒単位)")
 		archive  = flag.String("archive", "archive", "アーカイブの保存先")
 		dbpath   = flag.String("db", "./db", "filedbデータベースへのパス")
 	)
@@ -64,4 +69,19 @@ func main() {
 		return
 	}
 
+	check(m, col)
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+Loop:
+	for {
+		select {
+		case <-time.After(*interval * time.Second):
+			check(m, col)
+		case <-signalChan:
+			// 終了
+			fmt.Println()
+			log.Printf(" 終了します ...")
+			break Loop
+		}
+	}
 }
